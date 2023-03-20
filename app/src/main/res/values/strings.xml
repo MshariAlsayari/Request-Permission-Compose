@@ -1,0 +1,15 @@
+<resources>
+
+
+    <string name="app_name">Request permission compose</string>
+
+    <string name="galleryRequestPermissionDialogTitle">App Would Like to Access Your Photos</string>
+    <string name="galleryRequestPermissionDialogBody">App needs access to your photos to use this features</string>
+
+    <string name="galleryDeniedPermissionDialogTitle">App requires access to your photos</string>
+    <string name="galleryDeniedPermissionDialogBody">You can enable this permission in the setting</string>
+
+
+
+    <string name="openSettings">Settings</string>
+</resources>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <string name="app_name">Request permission compose</string>
+
+
+    <string name="galleryRequestPermissionDialogTitle">يرغب التطبيق بالوصول إلى الصور الخاصة بك</string>
+    <string name="galleryRequestPermissionDialogBody">يرغب التطبيق في الوصول إلى الصور الخاصة لاستخدام هذه الميزة</string>
+
+    <string name="galleryDeniedPermissionDialogTitle">يتطلب التطبيق الوصول إلى الصور الخاصة بك</string>
+    <string name="galleryDeniedPermissionDialogBody">يمكنك إتاحة هذا الإذن في الإعدادات</string>
+
+
+    <string name="openSettings">الإعدادات</string>
+</resources>
