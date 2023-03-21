@@ -27,7 +27,7 @@ This is an Android Library that's implemented in JetpackCompoe to help you to re
 ```
  dependencies {
      ...
-  implementation 'com.github.MshariAlsayari:Request-Permission-Compose:<last-version>'
+     implementation 'com.github.MshariAlsayari:Request-Permission-Compose:<last-version>'
  }
 ```
 
