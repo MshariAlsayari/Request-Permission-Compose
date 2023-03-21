@@ -13,6 +13,8 @@
 ## Introduction
 This is an Android Library that's implemented in JetpackCompoe to help you to request a single permission or multiple permissions on runtime.
 
+![Screen Recording 2023-03-21 at 4 22 36 PM](https://user-images.githubusercontent.com/32165999/226619726-578e88f5-a822-404b-856c-3044ff3970d2.gif)
+
 
 ## Setup
 #### Step1: settings.gradle
