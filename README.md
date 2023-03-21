@@ -4,7 +4,7 @@
 ## Table of contents
 - [Introduction](#introduction)
 - [Setup](#setup)
-- [Examples](#examples)
+- [Functions](#functions)
    - [Single](#single)
    - [Multiple](#multiple)
 - [Full Example](#fullExample)
@@ -33,7 +33,7 @@ This is an Android Library that's implemented in JetpackCompoe to help you to re
  }
 ```
 
-## Examples
+## Functions
 
 
 ## Single
