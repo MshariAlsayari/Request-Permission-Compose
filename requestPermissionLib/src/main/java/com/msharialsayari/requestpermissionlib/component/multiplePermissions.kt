@@ -1,7 +1,5 @@
 package com.msharialsayari.requestpermissionlib.component
 
-
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
@@ -9,33 +7,21 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import com.google.accompanist.permissions.*
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.msharialsayari.requestpermissionlib.model.DialogParams
 
-
-@SuppressLint("PermissionLaunchedDuringComposition")
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun SinglePermission(
-    permission: String,
+fun MultiplePermissions(
+    permissions: List<String>,
     rationalDialogParams: DialogParams? = null,
     deniedDialogParams: DialogParams? = null,
     isGranted: () -> Unit,
-    onDone: () -> Unit,
+    onDone: () -> Unit
 ) {
     val context = LocalContext.current
-    val permissionState = rememberPermissionState(permission = permission, onPermissionResult = {})
-
-    val shouldShowRationalDialog = rationalDialogParams != null
-    val shouldShowDeniedDialog = deniedDialogParams != null
-
-
-    var systemDialogOpened by rememberSaveable {
-        mutableStateOf(false)
-    }
-
-
-    var openRationaleDialog by rememberSaveable {
+    var openRationaleDialog by remember {
         mutableStateOf(false)
     }
 
@@ -43,13 +29,17 @@ fun SinglePermission(
         mutableStateOf(false)
     }
 
+    val multiplePermissionState = rememberMultiplePermissionsState(
+        permissions = permissions,
+        onPermissionsResult = {}
+    )
 
     if (openRationaleDialog) {
-        ShowDialog(rationalDialogParams!!,
+        ShowDialogForMultiplePermission(
+            dialogParams = rationalDialogParams!!,
             onConfirmButtonClicked = {
+                multiplePermissionState.launchMultiplePermissionRequest()
                 openRationaleDialog = false
-                systemDialogOpened = true
-                permissionState.launchPermissionRequest()
             },
             onDismiss = {
                 openRationaleDialog = false
@@ -59,61 +49,41 @@ fun SinglePermission(
     }
 
     if (openDeniedDialog) {
-        ShowDialog(deniedDialogParams!!,
+        ShowDialogForMultiplePermission(
+            dialogParams = deniedDialogParams!!,
             onConfirmButtonClicked = {
-                openDeniedDialog = false
-                onDone()
                 context.startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
                     data = Uri.fromParts("package", context.packageName, null)
                 })
+                openDeniedDialog = false
             },
             onDismiss = {
                 openDeniedDialog = false
                 onDone()
-            })
+            }
+        )
     }
 
-
-    LaunchedEffect(key1 = permissionState.status) {
-        when {
-            permissionState.status.isGranted -> {
-                isGranted()
-                onDone()
-            }
-
-            permissionState.status.shouldShowRationale -> {
-                if (shouldShowRationalDialog) {
-                    openRationaleDialog = true
-                } else {
-                    openRationaleDialog = false
-                    onDone()
-                }
-
-            }
-
-            !permissionState.status.isGranted && !permissionState.status.shouldShowRationale -> {
-                if (shouldShowDeniedDialog && !systemDialogOpened) {
-                    openDeniedDialog = true
-                } else {
-                    openDeniedDialog = false
-                    onDone()
-                }
-            }
-
-            else -> {
-                onDone()
-            }
-
-
+    LaunchedEffect(
+        multiplePermissionState.allPermissionsGranted,
+        multiplePermissionState.shouldShowRationale
+    ) {
+        if (multiplePermissionState.allPermissionsGranted) {
+            isGranted()
+            onDone()
+        } else if (multiplePermissionState.shouldShowRationale && rationalDialogParams != null) {
+            openRationaleDialog = true
+        } else if (rationalDialogParams == null) {
+            multiplePermissionState.launchMultiplePermissionRequest()
+        } else if (!multiplePermissionState.allPermissionsGranted && !multiplePermissionState.shouldShowRationale && deniedDialogParams != null) {
+            openDeniedDialog = true
         }
-
     }
-
-
 }
 
+
 @Composable
-fun ShowDialog(
+private fun ShowDialogForMultiplePermission(
     dialogParams: DialogParams,
     onConfirmButtonClicked: () -> Unit,
     onDismiss: () -> Unit
@@ -124,10 +94,7 @@ fun ShowDialog(
         confirmButtonText = stringResource(id = dialogParams.positiveButtonText),
         dismissButtonText = stringResource(id = dialogParams.negativeButtonText),
         isCancelable = dialogParams.isCancelable,
-        icon = dialogParams.icon,
-        onConfirmButtonClicked = {
-            onConfirmButtonClicked()
-        },
+        onConfirmButtonClicked = onConfirmButtonClicked,
         onDismissButtonClicked = onDismiss
     )
 }

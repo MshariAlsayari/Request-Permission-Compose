@@ -5,10 +5,17 @@
 
     <string name="galleryRequestPermissionDialogTitle">App Would Like to Access Your Photos</string>
     <string name="galleryRequestPermissionDialogBody">App needs access to your photos to use this features</string>
-
     <string name="galleryDeniedPermissionDialogTitle">App requires access to your photos</string>
     <string name="galleryDeniedPermissionDialogBody">You can enable this permission in the setting</string>
 
+
+    <string name="micAndCameraPermissionDialogTitle">App Would Like to Access the Camera and Microphone</string>
+    <string name="micAndCameraPermissionDialogBody">App needs the Microphone and Camera permissions in order to call.</string>
+    <string name="micAndCameraDeniedPermissionDialogTitle">App Would Like to Access the Camera and Microphone</string>
+    <string name="micAndCameraDeniedPermissionDialogBody">App needs the Microphone and Camera permissions in order to call, but they have been permanently denied. Please continue to app settings, select \"Permissions\", and enable \"Microphone\" and \"Camera\".</string>
+
+
+    <string name="micAndCameraGranted">Camera and Microphone are granted you can use them</string>
 
 
     <string name="openSettings">Settings</string>

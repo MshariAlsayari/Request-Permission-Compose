@@ -7,10 +7,15 @@
 
     <string name="galleryRequestPermissionDialogTitle">يرغب التطبيق بالوصول إلى الصور الخاصة بك</string>
     <string name="galleryRequestPermissionDialogBody">يرغب التطبيق في الوصول إلى الصور الخاصة لاستخدام هذه الميزة</string>
-
     <string name="galleryDeniedPermissionDialogTitle">يتطلب التطبيق الوصول إلى الصور الخاصة بك</string>
     <string name="galleryDeniedPermissionDialogBody">يمكنك إتاحة هذا الإذن في الإعدادات</string>
 
+    <string name="micAndCameraPermissionDialogTitle">يحتاج التطبيق بالوصول إلى الكاميرا و للميكروفون الخاصة بك</string>
+    <string name="micAndCameraPermissionDialogBody">يرغب التطبيق إلى إذنَي الوصول إلى الميكروفون والكاميرا من أجل الاتصال.</string>
+    <string name="micAndCameraDeniedPermissionDialogTitle">يحتاج التطبيق بالوصول إلى الكاميرا و للميكروفون الخاصة بك</string>
+    <string name="micAndCameraDeniedPermissionDialogBody">يحتاج التطبيق إلى إذنَي الوصول إلى الميكروفون والكاميرا من أجل الاتصال، ولكن تم إيقافهما على نحو دائم. الرجاء الاطلاع على إعدادات التطبيق ثم اختيار \"الأذونات\" وتفعيل \"الميكروفون\" و\"الكاميرا\".</string>
+
+    <string name="micAndCameraGranted">يمكنك الآن استخدام الكاميرا والميكروفون</string>
 
     <string name="openSettings">الإعدادات</string>
 </resources>
