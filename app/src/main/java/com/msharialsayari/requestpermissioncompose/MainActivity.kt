@@ -2,27 +2,26 @@ package com.msharialsayari.requestpermissioncompose
 
 import android.Manifest
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import com.msharialsayari.requestpermissioncompose.ui.theme.RequestPermissionComposeTheme
-import com.msharialsayari.requestpermissionlib.component.MultiplePermissions
-import com.msharialsayari.requestpermissionlib.component.SinglePermission
+import com.msharialsayari.requestpermissionlib.component.RequestPermissions
 import com.msharialsayari.requestpermissionlib.model.DialogParams
 
 
@@ -58,8 +57,8 @@ fun HomeScreen() {
     )
 
     if (openGallery){
-        SinglePermission(
-            permission = Manifest.permission.READ_EXTERNAL_STORAGE,
+        RequestPermissions(
+            permissions = listOf(Manifest.permission.READ_EXTERNAL_STORAGE),
             rationalDialogParams = DialogParams(
                 title = R.string.galleryRequestPermissionDialogTitle,
                 message = R.string.galleryRequestPermissionDialogBody,
@@ -81,7 +80,7 @@ fun HomeScreen() {
     }
 
     if(openCameraAndMic){
-        MultiplePermissions(
+        RequestPermissions(
             permissions = listOf(Manifest.permission.CAMERA,Manifest.permission.RECORD_AUDIO),
             rationalDialogParams = DialogParams(
                 title = R.string.micAndCameraPermissionDialogTitle,

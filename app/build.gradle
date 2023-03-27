@@ -48,8 +48,8 @@ android {
 
 dependencies {
 
-    //implementation project(':requestPermissionLib')
-    implementation 'com.github.MshariAlsayari:Request-Permission-Compose:1.0.0'
+    implementation project(':requestPermissionLib')
+    //implementation 'com.github.MshariAlsayari:Request-Permission-Compose:1.0.0'
 
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'
