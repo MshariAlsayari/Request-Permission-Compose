@@ -4,9 +4,6 @@
 ## Table of contents
 - [Introduction](#introduction)
 - [Setup](#setup)
-- [Functions](#functions)
-   - [Single](#single)
-   - [Multiple](#multiple)
 - [Full Example](#fullExample)
 
    
@@ -35,35 +32,6 @@ This is an Android Library that's implemented in JetpackCompoe to help you to re
  }
 ```
 
-## Functions
-
-
-## Single
-
-```
-@Composable
-fun SinglePermission(
-    permission: String,
-    rationalDialogParams: DialogParams? = null,
-    deniedDialogParams: DialogParams? = null,
-    isGranted: () -> Unit,
-    onDone: () -> Unit,
-)
-```
-
-
-## Multiple
-```
-@Composable
-fun MultiplePermissions(
-    permissions: List<String>,
-    rationalDialogParams: DialogParams? = null,
-    deniedDialogParams: DialogParams? = null,
-    isGranted: () -> Unit,
-    onDone: () -> Unit
-)
-```
-
 
 ## Full Example
 
@@ -82,8 +50,8 @@ fun HomeScreen() {
     )
 
     if (openGallery){
-        SinglePermission(
-            permission = Manifest.permission.READ_EXTERNAL_STORAGE,
+     RequestPermissions(
+            permissions = listOf(Manifest.permission.READ_EXTERNAL_STORAGE),
             rationalDialogParams = DialogParams(
                 title = R.string.galleryRequestPermissionDialogTitle,
                 message = R.string.galleryRequestPermissionDialogBody,
@@ -105,7 +73,7 @@ fun HomeScreen() {
     }
 
     if(openCameraAndMic){
-        MultiplePermissions(
+       RequestPermissions(
             permissions = listOf(Manifest.permission.CAMERA,Manifest.permission.RECORD_AUDIO),
             rationalDialogParams = DialogParams(
                 title = R.string.micAndCameraPermissionDialogTitle,
