@@ -49,6 +49,8 @@ fun HomeScreen() {
         }
     )
 
+
+   // Single Permission
     if (openGallery){
      RequestPermissions(
             permissions = listOf(Manifest.permission.READ_EXTERNAL_STORAGE),
@@ -71,7 +73,9 @@ fun HomeScreen() {
             }
         )
     }
-
+    
+    
+ // Multiple Permissions
     if(openCameraAndMic){
        RequestPermissions(
             permissions = listOf(Manifest.permission.CAMERA,Manifest.permission.RECORD_AUDIO),
