@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
+import android.util.Log
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.platform.LocalContext
@@ -150,10 +151,6 @@ private fun SinglePermission(
     val shouldShowDeniedDialog = deniedDialogParams != null
 
 
-    var systemDialogOpened by rememberSaveable {
-        mutableStateOf(false)
-    }
-
 
     var openRationaleDialog by rememberSaveable {
         mutableStateOf(false)
@@ -167,9 +164,9 @@ private fun SinglePermission(
     if (openRationaleDialog) {
         ShowDialog(rationalDialogParams!!,
             onConfirmButtonClicked = {
-                openRationaleDialog = false
-                systemDialogOpened = true
                 permissionState.launchPermissionRequest()
+                openRationaleDialog = false
+
             },
             onDismiss = {
                 openRationaleDialog = false
@@ -182,7 +179,6 @@ private fun SinglePermission(
         ShowDialog(deniedDialogParams!!,
             onConfirmButtonClicked = {
                 openDeniedDialog = false
-                onDone()
                 context.startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
                     data = Uri.fromParts("package", context.packageName, null)
                 })
@@ -201,23 +197,12 @@ private fun SinglePermission(
                 onDone()
             }
 
-            permissionState.status.shouldShowRationale -> {
-                if (shouldShowRationalDialog) {
-                    openRationaleDialog = true
-                } else {
-                    openRationaleDialog = false
-                    onDone()
-                }
-
+            permissionState.status.shouldShowRationale && shouldShowRationalDialog -> {
+                openRationaleDialog = true
             }
 
-            !permissionState.status.isGranted && !permissionState.status.shouldShowRationale -> {
-                if (shouldShowDeniedDialog && !systemDialogOpened) {
-                    openDeniedDialog = true
-                } else {
-                    openDeniedDialog = false
-                    onDone()
-                }
+            !permissionState.status.isGranted && !permissionState.status.shouldShowRationale && shouldShowDeniedDialog  -> {
+                openDeniedDialog = true
             }
 
             else -> {
@@ -238,6 +223,7 @@ fun ShowDialog(
     onConfirmButtonClicked: () -> Unit,
     onDismiss: () -> Unit
 ) {
+
     MyAlertDialog(
         title = stringResource(dialogParams.title),
         message = stringResource(dialogParams.message),
@@ -251,3 +237,4 @@ fun ShowDialog(
         onDismissButtonClicked = onDismiss
     )
 }
+const val TAG = "RequestPermissions"
