@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
-import android.util.Log
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.platform.LocalContext
@@ -12,7 +11,6 @@ import androidx.compose.ui.res.stringResource
 import com.google.accompanist.permissions.*
 import com.msharialsayari.requestpermissionlib.model.DialogParams
 
-@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun RequestPermissions(
     permissions: List<String>,
@@ -145,7 +143,10 @@ private fun SinglePermission(
     onDone: () -> Unit,
 ) {
     val context = LocalContext.current
-    val permissionState = rememberPermissionState(permission = permission, onPermissionResult = {})
+    val permissionState = rememberPermissionState(permission = permission, onPermissionResult = {
+        if(!it)
+            onDone()
+    })
 
     val shouldShowRationalDialog = rationalDialogParams != null
     val shouldShowDeniedDialog = deniedDialogParams != null
@@ -164,9 +165,8 @@ private fun SinglePermission(
     if (openRationaleDialog) {
         ShowDialog(rationalDialogParams!!,
             onConfirmButtonClicked = {
-                permissionState.launchPermissionRequest()
                 openRationaleDialog = false
-
+                permissionState.launchPermissionRequest()
             },
             onDismiss = {
                 openRationaleDialog = false
@@ -201,7 +201,7 @@ private fun SinglePermission(
                 openRationaleDialog = true
             }
 
-            !permissionState.status.isGranted && !permissionState.status.shouldShowRationale && shouldShowDeniedDialog  -> {
+            !permissionState.status.isGranted && !permissionState.status.shouldShowRationale && shouldShowDeniedDialog -> {
                 openDeniedDialog = true
             }
 
