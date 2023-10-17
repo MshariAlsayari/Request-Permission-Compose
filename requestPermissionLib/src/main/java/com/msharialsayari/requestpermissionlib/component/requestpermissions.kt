@@ -89,6 +89,7 @@ private fun MultiplePermissions(
                     data = Uri.fromParts("package", context.packageName, null)
                 })
                 openDeniedDialog = false
+                onDone()
             },
             onDismiss = {
                 openDeniedDialog = false
@@ -178,10 +179,11 @@ private fun SinglePermission(
     if (openDeniedDialog) {
         ShowDialog(deniedDialogParams!!,
             onConfirmButtonClicked = {
-                openDeniedDialog = false
                 context.startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
                     data = Uri.fromParts("package", context.packageName, null)
                 })
+                openDeniedDialog = false
+                onDone()
             },
             onDismiss = {
                 openDeniedDialog = false
@@ -190,7 +192,9 @@ private fun SinglePermission(
     }
 
 
-    LaunchedEffect(key1 = permissionState.status) {
+    LaunchedEffect(
+        key1 = permissionState.status.isGranted ,
+        key2 = permissionState.status.shouldShowRationale) {
         when {
             permissionState.status.isGranted -> {
                 isGranted()
@@ -234,7 +238,9 @@ fun ShowDialog(
         onConfirmButtonClicked = {
             onConfirmButtonClicked()
         },
-        onDismissButtonClicked = onDismiss
+        onDismissButtonClicked = {
+            onDismiss()
+        }
     )
 }
 const val TAG = "RequestPermissions"
