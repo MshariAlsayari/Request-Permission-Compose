@@ -17,6 +17,8 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.msharialsayari.requestpermissionlib.findActivity
 import com.msharialsayari.requestpermissionlib.model.DialogParams
+import com.msharialsayari.requestpermissionlib.model.getMessage
+import com.msharialsayari.requestpermissionlib.model.getTitle
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
@@ -46,7 +48,10 @@ fun MultiplePermissions(
 
             when{
                 permissionPermanentlyDenied  && shouldShowDeniedDialog ->  openDeniedDialog = true
-                else -> onDone()
+                else -> {
+                    isGranted()
+                    onDone()
+                }
             }
 
         }
@@ -111,11 +116,7 @@ private fun ShowDialogForMultiplePermission(
     onDismiss: () -> Unit
 ) {
     MyAlertDialog(
-        title = stringResource(dialogParams.title),
-        message = stringResource(dialogParams.message),
-        confirmButtonText = stringResource(id = dialogParams.positiveButtonText),
-        dismissButtonText = stringResource(id = dialogParams.negativeButtonText),
-        isCancelable = dialogParams.isCancelable,
+        dialogParams = dialogParams,
         onConfirmButtonClicked = onConfirmButtonClicked,
         onDismissButtonClicked = onDismiss
     )

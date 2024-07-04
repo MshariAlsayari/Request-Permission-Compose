@@ -18,11 +18,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.msharialsayari.requestpermissioncompose.ui.theme.RequestPermissionComposeTheme
 import com.msharialsayari.requestpermissionlib.component.RequestPermissions
 import com.msharialsayari.requestpermissionlib.model.DialogParams
+import com.msharialsayari.requestpermissionlib.model.IconStyleParams
+import com.msharialsayari.requestpermissionlib.model.TextStyleParams
 
 
 class MainActivity : ComponentActivity() {
@@ -60,8 +65,8 @@ fun HomeScreen() {
         RequestPermissions(
             permissions = listOf(Manifest.permission.READ_EXTERNAL_STORAGE),
             rationalDialogParams = DialogParams(
-                title = R.string.galleryRequestPermissionDialogTitle,
-                message = R.string.galleryRequestPermissionDialogBody,
+                titleStr = stringResource(id = R.string.galleryRequestPermissionDialogTitle),
+                messageStr = stringResource(id =R.string.galleryRequestPermissionDialogBody),
                 icon = R.drawable.baseline_info_24
             ),
             deniedDialogParams = DialogParams(

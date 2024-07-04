@@ -11,12 +11,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.core.app.ActivityCompat
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
-import com.google.accompanist.permissions.shouldShowRationale
 import com.msharialsayari.requestpermissionlib.findActivity
 import com.msharialsayari.requestpermissionlib.model.DialogParams
 
@@ -37,11 +35,14 @@ fun SinglePermission(
     var openDeniedDialog by rememberSaveable { mutableStateOf(false) }
     var firstTime by rememberSaveable { mutableStateOf(true) }
 
-    val permissionState = rememberPermissionState(permission = permission, onPermissionResult = { isGranted ->
-        val permissionPermanentlyDenied = !ActivityCompat.shouldShowRequestPermissionRationale(context.findActivity(), permission) && !isGranted
+    val permissionState = rememberPermissionState(permission = permission, onPermissionResult = { isPermissionsGranted ->
+        val permissionPermanentlyDenied = !ActivityCompat.shouldShowRequestPermissionRationale(context.findActivity(), permission) && !isPermissionsGranted
         when{
             permissionPermanentlyDenied  && shouldShowDeniedDialog ->  openDeniedDialog = true
-            else -> onDone()
+            else -> {
+                isGranted()
+                onDone()
+            }
         }
     })
 
@@ -80,7 +81,7 @@ fun SinglePermission(
             isGranted()
             onDone()
         } else {
-            LaunchedEffect(key1 = Unit) {
+            LaunchedEffect(Unit) {
                 if(shouldShowRationalDialog){
                     openRationaleDialog = true
                 }else{
@@ -97,19 +98,9 @@ fun ShowDialog(
     onConfirmButtonClicked: () -> Unit,
     onDismiss: () -> Unit
 ) {
-
     MyAlertDialog(
-        title = stringResource(dialogParams.title),
-        message = stringResource(dialogParams.message),
-        confirmButtonText = stringResource(id = dialogParams.positiveButtonText),
-        dismissButtonText = stringResource(id = dialogParams.negativeButtonText),
-        isCancelable = dialogParams.isCancelable,
-        icon = dialogParams.icon,
-        onConfirmButtonClicked = {
-            onConfirmButtonClicked()
-        },
-        onDismissButtonClicked = {
-            onDismiss()
-        }
+       dialogParams = dialogParams,
+        onConfirmButtonClicked = onConfirmButtonClicked,
+        onDismissButtonClicked = onDismiss
     )
 }
