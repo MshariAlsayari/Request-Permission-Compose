@@ -39,8 +39,11 @@ fun SinglePermission(
         val permissionPermanentlyDenied = !ActivityCompat.shouldShowRequestPermissionRationale(context.findActivity(), permission) && !isPermissionsGranted
         when{
             permissionPermanentlyDenied  && shouldShowDeniedDialog ->  openDeniedDialog = true
-            else -> {
+            isPermissionsGranted -> {
                 isGranted()
+                onDone()
+            }
+            else ->{
                 onDone()
             }
         }

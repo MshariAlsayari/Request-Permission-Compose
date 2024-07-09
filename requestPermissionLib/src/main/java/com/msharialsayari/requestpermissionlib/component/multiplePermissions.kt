@@ -46,10 +46,17 @@ fun MultiplePermissions(
                 ) && !it.value
             }.isNotEmpty()
 
+            val isPermissionsGranted = it.filter {
+                !it.value
+            }.isEmpty()
+
             when{
                 permissionPermanentlyDenied  && shouldShowDeniedDialog ->  openDeniedDialog = true
-                else -> {
+                isPermissionsGranted -> {
                     isGranted()
+                    onDone()
+                }
+                else -> {
                     onDone()
                 }
             }
