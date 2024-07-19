@@ -21,7 +21,7 @@ import com.msharialsayari.requestpermissionlib.model.getTitle
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun MyAlertDialog(
+internal fun MyAlertDialog(
     dialogParams: DialogParams,
     onConfirmButtonClicked: (() -> Unit)? = null,
     onDismissButtonClicked: (() -> Unit)? = null,
@@ -91,17 +91,19 @@ fun MyAlertDialog(
 
 
     AlertDialog(
+        modifier = dialogParams.modifier ?: Modifier.padding(8.dp),
         onDismissRequest = { onDismissButtonClicked?.invoke() },
         confirmButton = { confirmButtons.invoke() },
         dismissButton = { dismissButton.invoke() },
         title = { dialogTitle?.invoke() },
         text = { DialogMessage(value = message, style = dialogParams.messageTextStyle) },
+        shape = dialogParams.shape ?: MaterialTheme.shapes.medium,
+        backgroundColor = dialogParams.backgroundColor ?: MaterialTheme.colors.surface,
         properties = DialogProperties(
             dismissOnBackPress = isCancelable,
             dismissOnClickOutside = isCancelable,
             usePlatformDefaultWidth = false
         ),
-        modifier = Modifier.padding(8.dp)
     )
 }
 

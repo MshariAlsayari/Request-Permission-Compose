@@ -1,24 +1,18 @@
 package com.msharialsayari.requestpermissionlib.component
 
-import android.content.Intent
-import android.net.Uri
-import android.provider.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.core.app.ActivityCompat
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.msharialsayari.requestpermissionlib.findActivity
 import com.msharialsayari.requestpermissionlib.model.DialogParams
-import com.msharialsayari.requestpermissionlib.model.getMessage
-import com.msharialsayari.requestpermissionlib.model.getTitle
+import com.msharialsayari.requestpermissionlib.navigateToSetting
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
@@ -83,10 +77,7 @@ fun MultiplePermissions(
         ShowDialogForMultiplePermission(
             dialogParams = deniedDialogParams!!,
             onConfirmButtonClicked = {
-                context.findActivity()
-                    .startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-                        data = Uri.fromParts("package", context.packageName, null)
-                    })
+                navigateToSetting(context)
                 openDeniedDialog = false
                 onDone()
             },

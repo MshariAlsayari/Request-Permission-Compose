@@ -2,10 +2,15 @@ package com.msharialsayari.requestpermissionlib.model
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.stringResource
 
 data class DialogParams (
+    val modifier: Modifier? = null,
     @StringRes val title:Int? = null,
     @StringRes val message:Int? = null,
     val titleStr:String? = null,
@@ -18,6 +23,8 @@ data class DialogParams (
     val positiveButtonTextStyle:TextStyleParams = TextStyleParams(),
     val negativeButtonTextStyle:TextStyleParams = TextStyleParams(),
     val iconStyle:IconStyleParams = IconStyleParams(),
+    val shape: Shape? = null,
+    val backgroundColor: Color? = null,
     val isCancelable :Boolean = false
 )
 

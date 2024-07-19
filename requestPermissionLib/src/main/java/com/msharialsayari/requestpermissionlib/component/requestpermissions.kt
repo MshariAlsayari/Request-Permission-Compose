@@ -1,14 +1,6 @@
 package com.msharialsayari.requestpermissionlib.component
 
-import android.annotation.SuppressLint
-import android.content.Intent
-import android.net.Uri
-import android.provider.Settings
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
-import com.google.accompanist.permissions.*
 import com.msharialsayari.requestpermissionlib.model.DialogParams
 
 @Composable
@@ -40,16 +32,3 @@ fun RequestPermissions(
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-const val TAG = "RequestPermissions"

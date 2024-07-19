@@ -1,9 +1,6 @@
 package com.msharialsayari.requestpermissionlib.component
 
 import android.annotation.SuppressLint
-import android.content.Intent
-import android.net.Uri
-import android.provider.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -17,6 +14,7 @@ import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.msharialsayari.requestpermissionlib.findActivity
 import com.msharialsayari.requestpermissionlib.model.DialogParams
+import com.msharialsayari.requestpermissionlib.navigateToSetting
 
 @SuppressLint("PermissionLaunchedDuringComposition")
 @OptIn(ExperimentalPermissionsApi::class)
@@ -33,7 +31,6 @@ fun SinglePermission(
     val shouldShowDeniedDialog = deniedDialogParams != null
     var openRationaleDialog by rememberSaveable { mutableStateOf(false) }
     var openDeniedDialog by rememberSaveable { mutableStateOf(false) }
-    var firstTime by rememberSaveable { mutableStateOf(true) }
 
     val permissionState = rememberPermissionState(permission = permission, onPermissionResult = { isPermissionsGranted ->
         val permissionPermanentlyDenied = !ActivityCompat.shouldShowRequestPermissionRationale(context.findActivity(), permission) && !isPermissionsGranted
@@ -53,7 +50,6 @@ fun SinglePermission(
         ShowDialog(rationalDialogParams!!,
             onConfirmButtonClicked = {
                 openRationaleDialog = false
-                firstTime = false
                 permissionState.launchPermissionRequest()
             },
             onDismiss = {
@@ -66,9 +62,7 @@ fun SinglePermission(
     if (openDeniedDialog) {
         ShowDialog(deniedDialogParams!!,
             onConfirmButtonClicked = {
-                context.findActivity().startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-                    data = Uri.fromParts("package", context.packageName, null)
-                })
+                navigateToSetting(context)
                 openDeniedDialog = false
                 onDone()
             },
@@ -78,19 +72,14 @@ fun SinglePermission(
             })
     }
 
-    if (firstTime) {
-        firstTime = false
+    LaunchedEffect(Unit) {
         if (permissionState.status.isGranted) {
             isGranted()
             onDone()
+        } else if (shouldShowRationalDialog) {
+            openRationaleDialog = true
         } else {
-            LaunchedEffect(Unit) {
-                if(shouldShowRationalDialog){
-                    openRationaleDialog = true
-                }else{
-                    permissionState.launchPermissionRequest()
-                }
-            }
+            permissionState.launchPermissionRequest()
         }
     }
 }
